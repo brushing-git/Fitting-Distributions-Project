@@ -30,7 +30,7 @@ Note that the first data set has a clearly exponential distribution form, and th
 
 I employed a battery of statistical methods and tests, including frequentist and Bayesian methods.  The principal method used was **maximum likelihood estimation** (MLE).  Intuitively, maximum likelihood estimation says the correct model is the one that best fits the data.  More concretely, this is the model that maximizes the likelihood of the data given the model or if $x_{0}, \dots, x_{n}$ are our data and $m \in M$ and $\theta \in \Theta$ are our models and parameters respectively, then the likelihood function $l$ is:
 
-$$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n} \, | \, \theta; m) $$
+$$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n} \; | \; \theta; m) $$
 
 Typically, an important assumption in MLE is that data are independent and identically distributed.  I followed this practice, which enables an easy computation of the likelihoods for each data sample.
 
