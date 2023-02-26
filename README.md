@@ -30,7 +30,7 @@ Note that the first data set has a clearly exponential distribution form, and th
 
 I employed a battery of statistical methods and tests, including frequentist and Bayesian methods.  The principal method used was **maximum likelihood estimation** (MLE).  Intuitively, maximum likelihood estimation says the correct model is the one that best fits the data.  More concretely, this is the model that maximizes the likelihood of the data given the model or if $x_{0}, \dots, x_{n}$ are our data and $m \in M$ and $\theta \in \Theta$ are our models and parameters respectively, then the likelihood function $l$ is:
 
-$$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n} \; | \; \theta; m) $$
+$$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n}  |  \theta; m) $$
 
 Typically, an important assumption in MLE is that data are independent and identically distributed.  I followed this practice, which enables an easy computation of the likelihoods for each data sample.
 
@@ -38,15 +38,27 @@ The hypothetical models I considered were the *uniform*, *normal (Gaussian)*, an
 
 Finally, statistical tests were run on the different maximum likelihood estimators.  Tests are typically broken down into two categories:  frequentist and Bayesian.  
 
-Frequentist methods rely upon null hypothesis testing and confidence intervals (these are effectively the same).  In null hypothesis testing, a null hypothesis is assumed and then a probability that the data was observed or more extreme is computed; if that probability exceeds a certain threshold, the null is rejected.  I used **Z-tests** and **K-S tests** for null hypothesis testing.  Confidence intervals likewise assume some statistical model is correct, and one estimates an interval on which values the data must have obtained at certain levels of probability.  I constructed confidence intervals at the **0.9, 0.95, 0.99, and 0.999** probabilities.
+Frequentist methods rely upon null hypothesis testing and confidence intervals (these are effectively the same).  In null hypothesis testing, a null hypothesis is assumed and then a probability that the data was observed or more extreme is computed; if that probability exceeds a certain threshold, the null is rejected.  I used **Z-tests** and **K-S tests** for null hypothesis testing, with the Z-test involving custom code and the K-S test using the `scipy.stats` package.  Confidence intervals likewise assume some statistical model is correct, and one estimates an interval on which values the data must have obtained at certain levels of probability.  I constructed confidence intervals at the **0.9, 0.95, 0.99, and 0.999** probabilities using custom code and functions from `numpy`.
 
 While frequentist methods aim to falsify hypotheses, Bayesian methods try to directly estimate the probabilities of hypotheses.  The main method is to estimate for some prior probability, the posterior probability given by Bayes theorem:
 
-$$ P(H \, | \, E) = \frac{P(E \, | \, H) P(H)}{P(E)} $$
+$$ P(H | E) = \frac{P(E | H) P(H)}{P(E)} $$
 
-In my models, I assumed a uniform prior over the different estimators.  This is just to use the heuristic the highest likelihood is best.  Or if the prior is not assumed to be given, we can estimate what is a called a Bayes factor, which is the ratio of likelihoods between models.  I computed **pairwise Bayes factors across the different models**.
+In my models, I assumed a uniform prior over the different estimators.  This is just to use the heuristic the highest likelihood is best.  I constructed custom code to compute the posterior.  Or if the prior is not assumed to be given, we can estimate what is a called a Bayes factor, which is the ratio of likelihoods between models.  I computed **pairwise Bayes factors across the different models**.
 
 ## Machine Learning Methods
+
+I wanted to test whether local search methods could be used to compute model parameters.  **This is important because not every probability distribution has parameters that can be analytically computed**.  Since in this case I could easily find the distribution parameters that maximumize the likelihoods, I could check my local search methods against the correct parameters.
+
+Two methods were employed:  **Newton-Rhapson** and **Gradient Ascent**.
+
+Newton-Rhapson is a modification of Newton's method for estimating probability distributions.  Newton's method is an optimization method that searchs for the roots of functions by using ratio of the function to its first derivative.  Intuitively, we can picture this as iteratively finding the tangent line that sets the function to zero.  In the Newton-Rhapson method, we instead aim to solve for the zeros of the likelihood function's first derivative because this will correspond to the parameters that maximize the likelihood.  To do this, we iterate over a model's parameters by subtracting our current best estimate of the models parameters by the ratio of the likelihood function's first and second derivatives on the current best guess's input:
+
+$$ l(\theta_{k+1}) = \theta_{k} - \frac{l^{\prime}(\theta_{k})}{l^{\prime\prime}(\theta_{k})} $$
+
+As I discuss below, this method requires certain assumptions to hold, the initial first guess to be "sufficiently close", and the likelihood function to be well-behaved.  I built custom code for the Newton-Rhapson method, which can be found in [distfit.py](distfit.py).
+
+Gradient Ascent is the same local search method as **Gradient Descent**.  The difference is that we seek to maximize a function in ascent as opposed to minimizing a function.
 
 ## Experiments
 
