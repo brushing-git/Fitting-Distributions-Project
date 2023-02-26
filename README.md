@@ -62,7 +62,7 @@ Gradient Ascent is the same local search method as **Gradient Descent**.  The di
 
 $$ \theta_{k+1} = \theta_{k} + \eta \nabla l(\theta_{k}) $$
 
-Various $\eta$s were employed, and I found that an $\eta=0.01$ to be most effective.  Like Newton's method, a stopping criteria is typically employed.  Here I used 10000 iterations.  I wrote custom code for Gradient Ascent, which can also be found in [distfit.py](distfit.py).
+Various $\eta$s were employed, and I found that an $\eta = 0.01$ to be most effective.  Like Newton's method, a stopping criteria is typically employed.  Here I used 10000 iterations.  I wrote custom code for Gradient Ascent, which can also be found in [distfit.py](distfit.py).
 
 ## Experiments
 
