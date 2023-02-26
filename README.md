@@ -54,11 +54,15 @@ Two methods were employed:  **Newton-Rhapson** and **Gradient Ascent**.
 
 Newton-Rhapson is a modification of Newton's method for estimating probability distributions.  Newton's method is an optimization method that searchs for the roots of functions by using ratio of the function to its first derivative.  Intuitively, we can picture this as iteratively finding the tangent line that sets the function to zero.  In the Newton-Rhapson method, we instead aim to solve for the zeros of the likelihood function's first derivative because this will correspond to the parameters that maximize the likelihood.  To do this, we iterate over a model's parameters by subtracting our current best estimate of the models parameters by the ratio of the likelihood function's first and second derivatives on the current best guess's input:
 
-$$ l(\theta_{k+1}) = \theta_{k} - \frac{l^{\prime}(\theta_{k})}{l^{\prime\prime}(\theta_{k})} $$
+$$ \theta_{k+1} = \theta_{k} - \frac{l^{\prime}(\theta_{k})}{l^{\prime\prime}(\theta_{k})} $$
 
-As I discuss below, this method requires certain assumptions to hold, the initial first guess to be "sufficiently close", and the likelihood function to be well-behaved.  I built custom code for the Newton-Rhapson method, which can be found in [distfit.py](distfit.py).
+Since this is an approximation that is computed, it is important to have stopping criteria for my estimators.  Typically, this is either a fixed number of iterations or when the changes in parameter estimates fall below a threshold.  I used 1000 iterations as my stopping threshold or a percentage change in solution that is less than 0.00000001.  As I discuss below, this method requires certain assumptions to hold, the initial first guess to be "sufficiently close", and the likelihood function to be well-behaved.  I built custom code for the Newton-Rhapson method, which can be found in [distfit.py](distfit.py).
 
-Gradient Ascent is the same local search method as **Gradient Descent**.  The difference is that we seek to maximize a function in ascent as opposed to minimizing a function.
+Gradient Ascent is the same local search method as **Gradient Descent**.  The difference is that we seek to maximize a function in ascent as opposed to minimizing a function by adding instead of subtracting our gradient.  Intuitively, these methods work by following the slope of a function until you reach a peak (for ascent) or valley (for descent).  In terms of math, this means we adjust our estimation by adding the list of partial derivatives of our likelihood estimation times some constant $\eta$:
+
+$$ \theta_{k+1} = \theta_{k} + \eta \nabla l(\theta_{k}) $$
+
+Various $\eta$s were employed, and I found that an $\eta=0.01$ to be most effective.  Like Newton's method, a stopping criteria is typically employed.  Here I used 10000 iterations.  I wrote custom code for Gradient Ascent, which can also be found in [distfit.py](distfit.py).
 
 ## Experiments
 
