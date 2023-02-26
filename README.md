@@ -16,7 +16,7 @@ Each data set consisted of 10,000 floats.  There were 15 total data sets stored 
 
 I manipulated the data set by importing it into python and converting the resultant list as a 1 dimensonional `numpy` array.
 
-To better understand the imported data sets, I first visualized a selection of them using `matplotlib`.  This was done in a Jupyter Notebook, which can be founnd in ![here](https://github.com/brushing-git/Fitting-Distributions-Project/blob/master/Data/distfit_histograms.ipynb).
+To better understand the imported data sets, I first visualized a selection of them using `matplotlib`.  This was done in a Jupyter Notebook, which can be found [here](Data/distfit_histograms.ipynb).
 
 Examples of the generated histograms are below.
 
@@ -27,6 +27,24 @@ Data Set d1.txt | Data Set d3.txt
 Note that the first data set has a clearly exponential distribution form, and the third data set has a more Gaussian form.
 
 ## Statistical Methods
+
+I employed a battery of statistical methods and tests, including frequentist and Bayesian methods.  The principal method used was **maximum likelihood estimation** (MLE).  Intuitively, maximum likelihood estimation says the correct model is the one that best fits the data.  More concretely, this is the model that maximizes the likelihood of the data given the model or if $x_{0}, \dots, x_{n}$ are our data and $m \in M$ and $\theta \in \Theta$ are our models and parameters respectively, then the likelihood function $l$ is:
+
+$$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n} \, | \, \theta; m) $$
+
+Typically, an important assumption in MLE is that data are independent and identically distributed.  I followed this practice, which enables an easy computation of the likelihoods for each data sample.
+
+The hypothetical models I considered were the *uniform*, *normal (Gaussian)*, and *exponential* distributions.  A nice feature of MLE is that in the case of these hypotheses, MLE estimates can be computed analytically.  I wrote custom code in python to do this, though in practice one would typically rely upon a library such as `scipy.stats`.
+
+Finally, statistical tests were run on the different maximum likelihood estimators.  Tests are typically broken down into two categories:  frequentist and Bayesian.  
+
+Frequentist methods rely upon null hypothesis testing and confidence intervals (these are effectively the same).  In null hypothesis testing, a null hypothesis is assumed and then a probability that the data was observed or more extreme is computed; if that probability exceeds a certain threshold, the null is rejected.  I used **Z-tests** and **K-S tests** for null hypothesis testing.  Confidence intervals likewise assume some statistical model is correct, and one estimates an interval on which values the data must have obtained at certain levels of probability.  I constructed confidence intervals at the **0.9, 0.95, 0.99, and 0.999** probabilities.
+
+While frequentist methods aim to falsify hypotheses, Bayesian methods try to directly estimate the probabilities of hypotheses.  The main method is to estimate for some prior probability, the posterior probability given by Bayes theorem:
+
+$$ P(H \, | \, E) = \frac{P(E \, | \, H) P(H)}{P(E)} $$
+
+In my models, I assumed a uniform prior over the different estimators.  This is just to use the heuristic the highest likelihood is best.  Or if the prior is not assumed to be given, we can estimate what is a called a Bayes factor, which is the ratio of likelihoods between models.  I computed **pairwise Bayes factors across the different models**.
 
 ## Machine Learning Methods
 
