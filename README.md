@@ -1,5 +1,7 @@
 # Fitting Distributions Project
 
+![My Image](Images/d3.png)
+
 ## Overview
 
 A perennial problem in everyday life is weighing the truth of various hypotheses when presented some data.  In classical statistics, an example of this problem is estimating the best probability distribution that fits a sequence of samples.  This project recreates from scratch in python a number of core statistical methods used to address the problem of fitting distributions to data.  Additionally, I experiment with a number of optimization techniques to estimate those distribution parameters.  I show that these techniques are intractable due to limits in representing floating point numbers.
@@ -9,6 +11,20 @@ The problem of fitting distributions to data is useful for identifying statistic
 My key methods include **maximum likelihood estimation, Newton's method, gradient ascent, Z-tests, K-S tests, confidence intervals, posteriors, and Bayes factors**.
 
 ## Data Sets
+
+Each data set consisted of 10,000 floats.  There were 15 total data sets stored in txt files, where the floats were separated by line breaks.
+
+I manipulated the data set by importing it into python and converting the resultant list as a 1 dimensonional `numpy` array.
+
+To better understand the imported data sets, I first visualized a selection of them using `matplotlib`.  This was done in a Jupyter Notebook, which can be founnd in ![here](https://github.com/brushing-git/Fitting-Distributions-Project/blob/master/Data/distfit_histograms.ipynb).
+
+Examples of the generated histograms are below.
+
+Data Set d1.txt | Data Set d3.txt
+:--------------:|:---------------:
+![My Image](Images/d1.png) | ![My Image](Images/d3.png)
+
+Note that the first data set has a clearly exponential distribution form, and the third data set has a more Gaussian form.
 
 ## Statistical Methods
 
