@@ -38,7 +38,7 @@ The hypothetical models I considered were the *uniform*, *normal (Gaussian)*, an
 
 Finally, statistical tests were run on the different maximum likelihood estimators.  Tests are typically broken down into two categories:  frequentist and Bayesian.  
 
-Frequentist methods rely upon null hypothesis testing and confidence intervals (these are effectively the same).  In null hypothesis testing, a null hypothesis is assumed and then a probability that the data was observed or more extreme is computed; if that probability exceeds a certain threshold, the null is rejected.  I used **Z-tests** and **K-S tests** for null hypothesis testing, with the Z-test involving custom code and the K-S test using the `scipy.stats` package.  Confidence intervals likewise assume some statistical model is correct, and one estimates an interval on which values the data must have obtained at certain levels of probability.  I constructed confidence intervals at the **0.9, 0.95, 0.99, and 0.999** probabilities using custom code and functions from `numpy`.
+Frequentist methods rely upon null hypothesis testing and confidence intervals (these are effectively the same).  In null hypothesis testing, a null hypothesis is assumed and then we compute the probability that that our data would be as extreme or more so than what was observed; if that probability exceeds a certain threshold, the null is rejected.  I used **Z-tests** and **K-S tests** for null hypothesis testing, with the Z-test involving custom code and the K-S test using the `scipy.stats` package.  Confidence intervals likewise assume some statistical model is correct, and one estimates an interval on which values the data must have obtained at certain levels of probability.  I constructed confidence intervals at the **0.9, 0.95, 0.99, and 0.999** probabilities using custom code and functions from `numpy`.
 
 While frequentist methods aim to falsify hypotheses, Bayesian methods try to directly estimate the probabilities of hypotheses.  The main method is to estimate for some prior probability, the posterior probability given by Bayes theorem:
 
@@ -84,8 +84,12 @@ $\mathcal{N}(2.70365376, 3.1503997)$ | -30679.03048238257 | 1.0 | 0.835141359881
 $\mathcal{U}(-8.36011 14.7523)$ | -31403.697027089074 | 0.0 | 0.0 | 1.91125...e-315 | $\mathcal{N}$ -724.66654471, $Exp$ 187116.59814487
 $Exp(0.36986985)$ | -218520.29517196323 | 0.0 | 0.0 | 0.0 | $\mathcal{N}$ -187841.26468958, $\mathcal{U}$ -187116.59814487
 
-Other results were similar, with most tests agreeing on models for the generating distributions.
+Other results were similar, with most tests agreeing on models for the generating distributions.  A table of results can be found in .
 
 ## Discussion
 
-## Further Reading
+Overall, the methods employed here did a good job at estimating the generating distributions.  There was some disagreement in the methods, with the Z-test and K-S test sometimes disagreeing.  The most likely reason for this discrepancy is due to the Z-test relying upon a normal distribution on models.  The most reliable estimations were given by the MLE posterior and Bayes factors.
+
+The **key takeaway is that these statistical techniques showed the robust ability at finding generating distributions found in the hypothesis partition**.  Once identified, the generating distributions can then be used to make predictions about future observations.
+
+Lastly, both the Newton-Rhapson and Gradient Ascent methods for computing model parameters showed important limitations.  For them to be successful, careful analysis of the functional form of hypotheses and their derivatives needs to be used.  In the case of the exponential distribution, Newton's method proved tractable and an excellent option to standard analytical techniques.  But on normal and uniform distributions, both Newton's method and Gradient Ascent had difficulty due to the behavior of the derivatives and optimizing functions.
