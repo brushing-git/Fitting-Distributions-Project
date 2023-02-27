@@ -76,7 +76,7 @@ Model selection experiments used MLEs that were computed analytically on each of
 
 ## Results
 
-Below is the result for d3.txt with the parameters estimated for each possible distribution and the results of the tests run on it.  Results can be found in the table below.  The distribution that most matched the data set is $\mathcal{N}(2.70365376, 3.1503997)$.  Confidence intervals at the 0.95 level for the mean is (2.641907065522342, 2.765400464393057) and for the variance is 3.1200908941338077, 3.1807085003864715.  All tests agreed with this conclusion.
+Below is the result for d3.txt with the parameters estimated for each possible distribution and the results of the tests run on it.  Results can be found in the table below.  The distribution that most matched the data set is $\mathcal{N}(2.70365376, 3.1503997)$.  Confidence intervals at the 0.95 level for the mean is (2.641907065522342, 2.765400464393057) and for the variance is (3.1200908941338077, 3.1807085003864715).  All tests agreed with this conclusion.
 
 **Distribution** | **Log-likelihood** | **Z-test P-value** | **KS-test P-value** | **MLE Posterior** | **Bayes Factor**
 :---------------:|:------------------:|:------------------:|:-------------------:|:-----------------:|:----------------:
@@ -84,7 +84,7 @@ $\mathcal{N}(2.70365376, 3.1503997)$ | -30679.03048238257 | 1.0 | 0.835141359881
 $\mathcal{U}(-8.36011 14.7523)$ | -31403.697027089074 | 0.0 | 0.0 | 1.91125...e-315 | $\mathcal{N}$ -724.66654471, $Exp$ 187116.59814487
 $Exp(0.36986985)$ | -218520.29517196323 | 0.0 | 0.0 | 0.0 | $\mathcal{N}$ -187841.26468958, $\mathcal{U}$ -187116.59814487
 
-Other results were similar, with most tests agreeing on models for the generating distributions.  A table of results can be found in .
+Other results were similar, with most tests agreeing on models for the generating distributions.  A table of results can be found in [tables.pdf](tables.pdf).
 
 ## Discussion
 
