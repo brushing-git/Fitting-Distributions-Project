@@ -32,7 +32,7 @@ I employed a battery of statistical methods and tests, including frequentist and
 
 $$ l(\theta) = \underset{\theta, m}{\arg \max} P(x_{0}, \dots, x_{n}  |  \theta; m) $$
 
-Typically, an important assumption in MLE is that data are independent and identically distributed.  I followed this practice, which enables an easy computation of the likelihoods for each data sample.
+Typically, the log-likelihood is used, and an important assumption in MLE is that data are independent and identically distributed.  I followed these practices, which enables an easy computation of the likelihoods for each data sample.
 
 The hypothetical models I considered were the *uniform*, *normal (Gaussian)*, and *exponential* distributions.  A nice feature of MLE is that in the case of these hypotheses, MLE estimates can be computed analytically.  I wrote custom code in python to do this, though in practice one would typically rely upon a library such as `scipy.stats`.
 
@@ -50,7 +50,7 @@ In my models, I assumed a uniform prior over the different estimators.  This is 
 
 I wanted to test whether local search methods could be used to compute model parameters.  **This is important because not every probability distribution has parameters that can be analytically computed**.  Since in this case I could easily find the distribution parameters that maximumize the likelihoods, I could check my local search methods against the correct parameters.
 
-Two methods were employed:  **Newton-Rhapson** and **Gradient Ascent**.
+Two methods were employed:  **Newton-Rhapson** and **Gradient Ascent**.  In both methods, I used the log-likelihood for parameter estimation.
 
 Newton-Rhapson is a modification of Newton's method for estimating probability distributions.  Newton's method is an optimization method that searchs for the roots of functions by using ratio of the function to its first derivative.  Intuitively, we can picture this as iteratively finding the tangent line that sets the function to zero.  In the Newton-Rhapson method, we instead aim to solve for the zeros of the likelihood function's first derivative because this will correspond to the parameters that maximize the likelihood.  To do this, we iterate over a model's parameters by subtracting our current best estimate of the models parameters by the ratio of the likelihood function's first and second derivatives on the current best guess's input:
 
@@ -66,7 +66,25 @@ Various $\eta$ s were employed, and I found that an $\eta = 0.01$ to be most eff
 
 ## Experiments
 
+My experiments fall into two classes:  parameter estimation and model selection.  In parameter estimation, MLEs were computed either analytically or through the two optimization algorithms discussed in the previous section.  I ran both the Newton-Rhapson and Gradient Ascent methods on solutions for likelihood paramters.  
+
+The principal difficulty found with Newton-Rhapson was that with the uniform and normal distributions the first and second derivatives for the log-likelihoods are not well-behaved.  In particular, the second derivatives grow very rapidly, which results in numbers that cannot be stored in 64 or even 128-bit floats.  The exponential distribution, however, performed excellently, and the Newton-Rhapson method very quickly converged to the correct value.
+
+Gradient Ascent, however, failed to perform well on any distribution parameter estimator.  The algorithm would very frequently converge on sub-optimal paramters for the likelihood estimators.  Inspection of the log-likelihood functions revealed that they have multiple local maxima, which means that Gradient Ascent will very likely get stuck.
+
+Model selection experiments used MLEs that were computed analytically on each of the 15 data sets.  I then tested each model's likelihood estimate with the battery of statistical methods documented above.  All experiments went well, and they can be duplicated in [distfit.py](distfit.py).
+
 ## Results
+
+Below is the result for d3.txt with the parameters estimated for each possible distribution and the results of the tests run on it.  Results can be found in the table below.  The distribution that most matched the data set is $\mathcal{N}(2.70365376, 3.1503997)$.  Confidence intervals at the 0.95 level for the mean is (2.641907065522342, 2.765400464393057) and for the variance is 3.1200908941338077, 3.1807085003864715.  All tests agreed with this conclusion.
+
+**Distribution** | **Log-likelihood** | **Z-test P-value** | **KS-test P-value** | **MLE Posterior** | **Bayes Factor**
+:---------------:|:------------------:|:------------------:|:-------------------:|:-----------------:|:----------------:
+$\mathcal{N}(2.70365376, 3.1503997)$ | -30679.03048238257 | 1.0 | 0.8351413598816311 | 1.0 | $\mathcal{U}$ 724.66654471, $Exp$ 187841.26468958
+$\mathcal{U}(-8.36011 14.7523)$ | -31403.697027089074 | 0.0 | 0.0 | 1.91125...e-315 | $\mathcal{N}$ -724.66654471, $Exp$ 187116.59814487
+$Exp(0.36986985)$ | -218520.29517196323 | 0.0 | 0.0 | 0.0 | $\mathcal{N}$ -187841.26468958, $\mathcal{U}$ -187116.59814487
+
+Other results were similar, with most tests agreeing on models for the generating distributions.
 
 ## Discussion
 
