@@ -44,7 +44,7 @@ While frequentist methods aim to falsify hypotheses, Bayesian methods try to dir
 
 $$ P(H | E) = \frac{P(E | H) P(H)}{P(E)} $$
 
-In my models, I assumed a uniform prior over the different estimators.  This is just to use the heuristic the highest likelihood is best.  I constructed custom code to compute the posterior.  Or if the prior is not assumed to be given, we can estimate what is a called a Bayes factor, which is the ratio of marginal probability of the observation between models.  I computed **pairwise Bayes factors across the different models**.
+In my models, I assumed a uniform prior over the different estimators.  This is just to use the heuristic the highest likelihood is best.  I constructed custom code to compute the posterior.  Or if the prior is not assumed to be given, we can estimate what is a called a Bayes factor, which is the ratio of marginal probability of the observation given the models.  I computed **pairwise Bayes factors across the different models**.
 
 ## Machine Learning Methods
 
